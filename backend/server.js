@@ -7,6 +7,7 @@ require('dotenv').config();
 const app = express();
 
 // Importar las rutas
+const usuarioRoutes = require('./routes/usuarioRoutes');
 const paradaRoutes = require('./routes/paradaRoutes');
 const transporteRoutes = require('./routes/transporteRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -30,11 +31,11 @@ app.get('/Unitrack', (req, res) => {
   res.json({ message: '¡Conexión exitosa con el backend!' });
 });
 
-// Usar las rutas de parada y transporte
-app.use('/api', paradaRoutes);
-app.use('/api', transporteRoutes);
-app.use('/api/auth', authRoutes);
-
+// Usar las rutas importadas
+app.use('/api', usuarioRoutes); // Rutas para usuarios
+app.use('/api', paradaRoutes); // Rutas para paradas
+app.use('/api', transporteRoutes); // Rutas para transporte
+app.use('/api/auth', authRoutes); // Rutas para autenticación
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;

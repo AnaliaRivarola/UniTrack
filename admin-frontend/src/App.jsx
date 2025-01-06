@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';  // Asegúrate de importar ambos
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "shared-frontend/components/Login";
 import AdminDashboard from '../src/views/AdminDashboard'; // Importa el Dashboard
+import { CreateUser } from './views/CreateUser';
+import { GestionarUsuarios } from './views/gestionarUsuarios';
 import './App.css';
 import axios from 'axios';
 
@@ -23,7 +25,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        
+        <Route path="/admin/create-user" element={<CreateUser />} /> {/* Ruta para crear usuario */}
+        <Route path="/admin/gestionar-usuarios" element={<GestionarUsuarios />} />
         {/* <Route path="/admin/gestionar-transporte" element={<GestionarTransporte />} />
         <Route path="/admin/gestionar-paradas" element={<GestionarParadas />} />
         <Route path="/admin/gestionar-usuarios" element={<GestionarUsuarios />} /> */}
