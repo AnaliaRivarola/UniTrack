@@ -21,4 +21,15 @@ router.post('/paradas', async (req, res) => {  // Ahora está en /api/paradas
   }
 });
 
+// Ruta para eliminar una parada
+router.delete('/paradas/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Parada.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Parada eliminada correctamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar la parada', error: error.message });
+  }
+});
+
 module.exports = router;

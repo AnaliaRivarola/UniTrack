@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "shared-frontend/components/Login";
 import AdminDashboard from '../src/views/AdminDashboard'; // Importa el Dashboard
 import { CreateUser } from './views/CreateUser';
+import { CrearParada } from './views/CrearParada';
+import { GestionarParadas } from './views/GestionarParada';
 import { GestionarUsuarios } from './views/gestionarUsuarios';
 import './App.css';
 import axios from 'axios';
@@ -27,9 +29,8 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/create-user" element={<CreateUser />} /> {/* Ruta para crear usuario */}
         <Route path="/admin/gestionar-usuarios" element={<GestionarUsuarios />} />
-        {/* <Route path="/admin/gestionar-transporte" element={<GestionarTransporte />} />
-        <Route path="/admin/gestionar-paradas" element={<GestionarParadas />} />
-        <Route path="/admin/gestionar-usuarios" element={<GestionarUsuarios />} /> */}
+        <Route path="/gestionar-paradas" element={<GestionarParadas />} />
+        <Route path="/crear-parada" element={<CrearParada />} />
       </Routes>
     </Router>
   );
