@@ -12,6 +12,7 @@ export const AdminDashboard = () => {
   };
 
   return (
+    
     <div className="admin-dashboard-container">
       <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
 
@@ -28,6 +29,9 @@ export const AdminDashboard = () => {
           <button onClick={() => handleNavigation("/admin/gestionar-usuarios")}>
             Gestionar Usuarios
           </button>
+          <button onClick={() => handleNavigation("/admin/gestionar-horarios")}>
+            Gestionar Horarios
+          </button>
         </div>
       </div>
 
@@ -35,5 +39,3 @@ export const AdminDashboard = () => {
     </div>
   );
 };
-
-export default AdminDashboard;

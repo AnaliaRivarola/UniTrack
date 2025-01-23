@@ -11,6 +11,7 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const paradaRoutes = require('./routes/paradaRoutes');
 const transporteRoutes = require('./routes/transporteRoutes');
 const authRoutes = require('./routes/authRoutes');
+const horarioRoutes = require('./routes/horarioRoutes');
 
 // Middleware
 app.use(cors());
@@ -36,6 +37,8 @@ app.use('/api', usuarioRoutes); // Rutas para usuarios
 app.use('/api', paradaRoutes); // Rutas para paradas
 app.use('/api', transporteRoutes); // Rutas para transporte
 app.use('/api/auth', authRoutes); // Rutas para autenticación
+app.use('/api/horarios', horarioRoutes);
+
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;

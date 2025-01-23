@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Navbar } from 'shared-frontend/components/Navbar';  // Asegúrate de que el Navbar esté importado
+import { Footer } from 'shared-frontend/components/Footer';
 import '../styles/GestionarUsuarios.css'; // Asegúrate de tener un archivo CSS para los estilos
 
 export const GestionarUsuarios = () => {
@@ -38,6 +40,7 @@ export const GestionarUsuarios = () => {
 
   return (
     <div className="gestionar-usuarios-container">
+      <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" /><Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
       <h1>Gestionar Usuarios</h1>
       
       <div className="create-user-button">
@@ -63,7 +66,7 @@ export const GestionarUsuarios = () => {
               <td>{usuario.nombre}</td>
               <td>{usuario.email}</td>
               <td>{usuario.telefono}</td>
-              <td>
+              <td id='acciones'>
                 <Link to={`/admin/usuarios/${usuario.id_usuario}/ver`}>
                   <button>Ver</button>
                 </Link>
@@ -76,6 +79,7 @@ export const GestionarUsuarios = () => {
           ))}
         </tbody>
       </table>
+      <Footer /> {/* Coloca el Footer en la parte inferior */}
     </div>
   );
 };

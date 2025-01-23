@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Navbar } from 'shared-frontend/components/Navbar';  // Asegúrate de que el Navbar esté importado
+import { Footer } from 'shared-frontend/components/Footer';
+
 import '../styles/GestionarParada.css';
 
 export const GestionarParadas = () => {
@@ -39,6 +42,7 @@ export const GestionarParadas = () => {
 
   return (
     <div className="gestionar-paradas-container">
+      <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" /><Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
       <div className="header">
         <h1>Gestionar Paradas</h1>
         <button onClick={() => navigate('/crear-parada')} className="crear-parada-btn">
@@ -73,6 +77,7 @@ export const GestionarParadas = () => {
           <p>No hay paradas disponibles.</p>
         )}
       </div>
+       <Footer /> {/* Coloca el Footer en la parte inferior */}
     </div>
   );
 };

@@ -1,4 +1,8 @@
 /* Estilo general para el Navbar */
+.main-content {
+  margin-top: 80px; /* Ajusta según la altura de tu navbar */
+}
+
 .navbar {
   display: fixed;
   justify-content: center;
@@ -11,7 +15,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000; /* Asegura que el navbar esté encima de otros elementos */
+  margin-bottom:100px;
 }
 
 /* Contenedor del logo */
