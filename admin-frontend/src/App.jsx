@@ -4,6 +4,7 @@ import { Login } from "shared-frontend/components/Login";
 import {AdminDashboard} from '../src/views/AdminDashboard'; // Importa el Dashboard
 import { CreateUser } from './views/CreateUser';
 import { CrearParada } from './views/CrearParada';
+import {EditParada} from './views/EditParada';
 import { GestionarParadas } from './views/GestionarParada';
 import { GestionarUsuarios } from './views/gestionarUsuarios';
 import { CrearHorario } from './views/CrearHorario';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/admin/gestionar-usuarios" element={<GestionarUsuarios />} />
         <Route path="/admin/gestionar-paradas" element={<GestionarParadas />} />
         <Route path="/admin/crear-parada" element={<CrearParada />} />
+        <Route path="/admin/editar-parada/:id" element={<EditParada />} />
         <Route path="/admin/crear-horario" element={<CrearHorario />} />
         <Route path="/admin/gestionar-horarios" element={<GestionarHorarios />} />
       </Routes>

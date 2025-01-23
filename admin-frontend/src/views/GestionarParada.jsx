@@ -63,7 +63,7 @@ export const GestionarParadas = () => {
                   <button onClick={() => navigate(`/ver-parada/${parada._id}`)} className="accion-btn ver-btn">
                     Ver
                   </button>
-                  <button onClick={() => navigate(`/editar-parada/${parada._id}`)} className="accion-btn editar-btn">
+                  <button onClick={() => navigate(`/admin/editar-parada/${parada._id}`)} className="accion-btn editar-btn">
                     Editar
                   </button>
                   <button onClick={() => handleEliminar(parada._id)} className="accion-btn eliminar-btn">
