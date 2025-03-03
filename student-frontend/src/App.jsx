@@ -2,8 +2,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import FiltrarParada from './views/filtrarParada';  // Importar FiltrarParada
+import { MapView } from './views/map';
 import SeleccionarTransporte from './views/seleccionarTransporte';  // Importar SeleccionarTransporte
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   const [count, setCount] = useState(0);
@@ -23,7 +25,7 @@ function App() {
       <Routes>
         <Route path="/filtrarParada" element={<FiltrarParada />} />
         <Route path="/seleccionarTransporte/:paradaId" element={<SeleccionarTransporte />} />
-        {/* Otras rutas */}
+        <Route path="/mapa" element={<MapView />} />
       </Routes>
     </Router>
   );

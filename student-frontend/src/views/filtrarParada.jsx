@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
-import { Navbar } from 'shared-frontend/components/Navbar';
-import { Footer } from 'shared-frontend/components/Footer';
+//import { Navbar } from 'shared-frontend/components/Navbar';
+//import { Footer } from 'shared-frontend/components/Footer';
 import "../styles/filtrarParada.css";
 
 function FiltrarParada() {
@@ -43,7 +43,7 @@ function FiltrarParada() {
 
   return (
     <div className="page-container">
-      <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
+     
 
       <div className="search-container">
         <input 

@@ -1,8 +1,8 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const fetch = require('node-fetch'); // Importar fetch para hacer peticiones a Flespi
 
 const app = express();
 
@@ -13,35 +13,125 @@ const transporteRoutes = require('./routes/transporteRoutes');
 const authRoutes = require('./routes/authRoutes');
 const horarioRoutes = require('./routes/horarioRoutes');
 
+// =============================
 // Middleware
-app.use(cors());
-app.use(express.json());
+// =============================
+app.use(cors()); // Permite solicitudes desde diferentes orígenes (CORS)
+app.use(express.json()); // Permite leer JSON en las peticiones
 
+// =============================
 // Conectar a MongoDB
+// =============================
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
-  console.log("Conectado a MongoDB");
+  console.log("✅ Conectado a MongoDB");
 }).catch((error) => {
-  console.error("Error al conectar a MongoDB:", error);
+  console.error("❌ Error al conectar a MongoDB:", error);
 });
 
-// Rutas
+// =============================
+// Definir rutas de la API
+// =============================
 app.get('/Unitrack', (req, res) => {
   res.json({ message: '¡Conexión exitosa con el backend!' });
 });
 
-// Usar las rutas importadas
-app.use('/api', usuarioRoutes); // Rutas para usuarios
-app.use('/api', paradaRoutes); // Rutas para paradas
-app.use('/api', transporteRoutes); // Rutas para transporte
-app.use('/api/auth', authRoutes); // Rutas para autenticación
-app.use('/api/horarios', horarioRoutes);
+app.use('/api', usuarioRoutes); // Rutas de usuarios
+app.use('/api', paradaRoutes); // Rutas de paradas
+app.use('/api', transporteRoutes); // Rutas de transporte
+app.use('/api/auth', authRoutes); // Rutas de autenticación
+app.use('/api/horarios', horarioRoutes); // Rutas de horarios
+
+// =============================
+// Integración de WebSocket (Socket.IO)
+// =============================
+
+// 1. Importamos el módulo 'http' y creamos un servidor HTTP basado en Express
+const http = require('http');
+const server = http.createServer(app);
+
+// 2. Importamos Socket.IO y lo configuramos
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Permitir conexiones desde cualquier origen
+    methods: ["GET", "POST"]
+  }
+});
+
+// 3. Escuchar eventos de conexión y desconexión de clientes WebSocket
+io.on("connection", (socket) => {
+  console.log("🔗 Nuevo cliente conectado:", socket.id);
+
+  // Escuchar cuando un cliente se desconecta
+  socket.on("disconnect", () => {
+    console.log("❌ Cliente desconectado:", socket.id);
+  });
+});
+
+// =============================
+// Integración con Flespi para obtener ubicación en tiempo real
+// =============================
+
+// Token de autenticación de Flespi (¡No compartir en código público!)
+const FLESPI_TOKEN = "R4LrxOHIA7De8z1hUOCiLbxE7BUNpUKSif9yzByr9mcTIPe6BQ0cc9Wkip3F4SNL";
+const DEVICE_ID = "73271578"; // ID del dispositivo en Flespi
+const FLESPI_URL = `https://flespi.io/gw/devices/${DEVICE_ID}/messages?count=10`;
+
+// =============================
+// Función para obtener la ubicación desde Flespi
+// =============================
+const obtenerUbicacionDesdeFlespi = async () => {
+  try {
+    const response = await fetch(FLESPI_URL, {
+      method: "GET",
+      headers: {
+        "Authorization": `FlespiToken ${FLESPI_TOKEN}`,
+        "Content-Type": "application/json"
+      }
+    });
+    const data = await response.json();
+    
+    console.log("🔍 Respuesta completa de Flespi:", data); // 👈 Esto mostrará toda la respuesta
+
+    if (data.result && data.result.length > 0) {
+      const mensaje = data.result[0];
+      const ubicacion = {
+        latitud: mensaje["position.latitude"],
+        longitud: mensaje["position.longitude"],
+        timestamp: mensaje["timestamp"]
+      };
+      console.log("📌 Ubicación obtenida:", ubicacion);
+      return ubicacion;
+    } else {
+      console.log("⚠️ No se encontraron datos en la respuesta de Flespi.");
+      return null;
+    }
+  } catch (error) {
+    console.error("❌ Error al obtener datos desde Flespi:", error);
+    return null;
+  }
+};
 
 
-// Iniciar el servidor
+// =============================
+// Consulta periódica de la ubicación cada 5 segundos
+// =============================
+setInterval(async () => {
+  const ubicacion = await obtenerUbicacionDesdeFlespi(); // Obtener datos de Flespi
+
+  if (ubicacion) {
+    console.log("🚀 Enviando ubicación actualizada:", ubicacion);
+    io.emit("ubicacionActualizada", ubicacion); // Enviar ubicación a los clientes WebSocket
+  }
+}, 5000);
+
+// =============================
+// Inicio del servidor HTTP
+// =============================
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });

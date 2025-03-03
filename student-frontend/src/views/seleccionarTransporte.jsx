@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';  // Importar useParams
-import { Navbar } from 'shared-frontend/components/Navbar';
-import { Footer } from 'shared-frontend/components/Footer';
+//import { Navbar } from 'shared-frontend/components/Navbar';
+//import { Footer } from 'shared-frontend/components/Footer';
 import "../styles/seleccionarTransporte.css";
 
 function SeleccionarTransportes() {
@@ -27,7 +27,7 @@ function SeleccionarTransportes() {
 
   return (
     <div className="page-container">
-      <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
+
 
       <div className="transport-list">
         <h3>Transportes disponibles para esta parada:</h3>
