@@ -75,14 +75,11 @@ io.on("connection", (socket) => {
 // Integración con Flespi para obtener ubicación en tiempo real
 // =============================
 
-// Token de autenticación de Flespi (¡No compartir en código público!)
 const FLESPI_TOKEN = "R4LrxOHIA7De8z1hUOCiLbxE7BUNpUKSif9yzByr9mcTIPe6BQ0cc9Wkip3F4SNL";
-const DEVICE_ID = "73271578"; // ID del dispositivo en Flespi
+const DEVICE_ID = "6267248"; // ID del dispositivo en Flespi
 const FLESPI_URL = `https://flespi.io/gw/devices/${DEVICE_ID}/messages?count=10`;
 
-// =============================
 // Función para obtener la ubicación desde Flespi
-// =============================
 const obtenerUbicacionDesdeFlespi = async () => {
   try {
     const response = await fetch(FLESPI_URL, {
@@ -92,18 +89,28 @@ const obtenerUbicacionDesdeFlespi = async () => {
         "Content-Type": "application/json"
       }
     });
+
     const data = await response.json();
-    
-    console.log("🔍 Respuesta completa de Flespi:", data); // 👈 Esto mostrará toda la respuesta
+
 
     if (data.result && data.result.length > 0) {
       const mensaje = data.result[0];
+      console.log("🔍 Contenido del mensaje:", JSON.stringify(mensaje, null, 2)); // Ver el contenido del mensaje de Flespi
+
+      // Aquí verificamos la validez, pero incluso si es falsa, seguimos con las coordenadas
+      const latitud = mensaje['position.latitude'];
+      const longitud = mensaje['position.longitude'];
+
+      console.log("🔍 Coordenadas recibidas:", latitud, longitud); // Ver las coordenadas
+
+      // Incluso si las coordenadas no son válidas, las enviamos
       const ubicacion = {
-        latitud: mensaje["position.latitude"],
-        longitud: mensaje["position.longitude"],
-        timestamp: mensaje["timestamp"]
+        latitud: latitud ?? -27.338057,  // Puedes establecer valores predeterminados
+        longitud: longitud ?? -55.860305,  // Puedes establecer valores predeterminados
+        timestamp: mensaje.timestamp || null
       };
-      console.log("📌 Ubicación obtenida:", ubicacion);
+
+      console.log("📌 Ubicación enviada:", ubicacion); // Ver ubicación que se va a enviar
       return ubicacion;
     } else {
       console.log("⚠️ No se encontraron datos en la respuesta de Flespi.");
@@ -115,10 +122,7 @@ const obtenerUbicacionDesdeFlespi = async () => {
   }
 };
 
-
-// =============================
 // Consulta periódica de la ubicación cada 5 segundos
-// =============================
 setInterval(async () => {
   const ubicacion = await obtenerUbicacionDesdeFlespi(); // Obtener datos de Flespi
 

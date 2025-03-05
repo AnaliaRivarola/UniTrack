@@ -5,7 +5,7 @@ import FiltrarParada from './views/filtrarParada';  // Importar FiltrarParada
 import { MapView } from './views/map';
 import SeleccionarTransporte from './views/seleccionarTransporte';  // Importar SeleccionarTransporte
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [count, setCount] = useState(0);

@@ -8,6 +8,9 @@ export default defineConfig({
     host: "0.0.0.0", // Permite el acceso desde otros dispositivos en la red local
     port: 5173,       // Puerto de desarrollo de Vite (puedes cambiarlo si lo necesitas)
   },
+  mimeTypes: {
+    'sw.js': 'application/javascript'
+  },
   plugins: [
     react(),
     VitePWA({
