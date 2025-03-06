@@ -74,7 +74,7 @@ function FiltrarParada() {
         </ul>
       </div>
 
-      <Footer />
+  
     </div>
   );
 }

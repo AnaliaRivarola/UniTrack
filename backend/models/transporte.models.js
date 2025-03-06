@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const TransporteSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   id_usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
-  latitud: { type: Number, required: true },
-  longitud: { type: Number, required: true },
   coban_id: { type: String, required: true },
   fecha_creacion: { type: Date, default: Date.now },
   paradas: [  // Referencia a paradas
