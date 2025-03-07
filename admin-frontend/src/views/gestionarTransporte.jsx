@@ -7,19 +7,17 @@ export const TransporteList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Obtener todos los transportes al cargar el componente
-    const fetchTransportes = async () => {
-      try {
-        const response = await axios.get('/api/transportes');
-        setTransportes(response.data);
-      } catch (error) {
-        console.error("Error al obtener los transportes", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTransportes();
+    axios.get('http://localhost:5000/api/transportes')
+      .then(response => {
+        console.log("Datos obtenidos:", response.data);
+        if (Array.isArray(response.data)) {
+          setTransportes(response.data);
+        } else {
+          console.error('La API no devolvió un array. Estructura recibida:', response.data);
+        }
+      })
+      .catch(error => console.error("Error al obtener transportes:", error))
+      .finally(() => setLoading(false)); // Asegura que loading se actualiza
   }, []);
 
   // Función para eliminar un transporte
@@ -36,49 +34,49 @@ export const TransporteList = () => {
     <div>
       <h1>Lista de Transportes</h1>
       <div>
-        <Link to="/transporte/crear">
+        <Link to="/admin/crear-transporte">
           <button className="btn btn-primary">Crear Transporte</button>
         </Link>
       </div>
       {loading ? (
-  <p>Cargando transportes...</p>
-) : transportes.length === 0 ? (
-  <p>No hay transportes disponibles.</p>
-) : (
-  <table className="table">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Coban ID</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {transportes.map((transporte) => (
-        <tr key={transporte._id}>
-          <td>{transporte.nombre}</td>
-          <td>{transporte.coban_id}</td>
-          <td>
-            <Link to={`/transporte/${transporte._id}`}>
-              <button className="btn btn-info">Ver</button>
-            </Link>
-            {' '}
-            <Link to={`/transporte/editar/${transporte._id}`}>
-              <button className="btn btn-warning">Editar</button>
-            </Link>
-            {' '}
-            <button
-              className="btn btn-danger"
-              onClick={() => deleteTransporte(transporte._id)}
-            >
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-)}
+        <p>Cargando transportes...</p>
+      ) : transportes.length === 0 ? (
+        <p>No hay transportes disponibles.</p>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Coban ID</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transportes.map((transporte) => (
+              <tr key={transporte._id}>
+                <td>{transporte.nombre}</td>
+                <td>{transporte.coban_id}</td>
+                <td>
+                  <Link to={`/transporte/${transporte._id}`}>
+                    <button className="btn btn-info">Ver</button>
+                  </Link>
+                  {' '}
+                  <Link to={`/transporte/editar/${transporte._id}`}>
+                    <button className="btn btn-warning">Editar</button>
+                  </Link>
+                  {' '}
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteTransporte(transporte._id)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
