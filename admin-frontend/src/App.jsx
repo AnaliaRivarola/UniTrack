@@ -9,6 +9,8 @@ import { GestionarParadas } from './views/GestionarParada';
 import { GestionarUsuarios } from './views/gestionarUsuarios';
 import { CrearHorario } from './views/CrearHorario';
 import GestionarHorarios from './views/GestionarHorario';
+import { TransporteList } from './views/gestionarTransporte';
+import { CrearTransporte } from "./views/CrearTransporte";
 
 import './App.css';
 import axios from 'axios';
@@ -38,6 +40,8 @@ function App() {
         <Route path="/admin/editar-parada/:id" element={<EditParada />} />
         <Route path="/admin/crear-horario" element={<CrearHorario />} />
         <Route path="/admin/gestionar-horarios" element={<GestionarHorarios />} />
+        <Route path="/admin/gestionar-transporte" element={<TransporteList />} />
+        <Route path="/admin/crear-transporte" element={<CrearTransporte />} />
       </Routes>
     </Router>
   );
