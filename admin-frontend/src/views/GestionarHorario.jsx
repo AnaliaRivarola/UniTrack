@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Navbar } from 'shared-frontend/components/Navbar';  // Asegúrate de que el Navbar esté importado
+import { Footer } from 'shared-frontend/components/Footer';
 import axios from 'axios';
 import '../styles/GestionarHorario.css';
 import { Link } from 'react-router-dom';
@@ -10,7 +12,13 @@ const GestionarHorarios = () => {
   useEffect(() => {
     const fetchHorarios = async () => {
       try {
+        // Realizamos la solicitud a la API
         const response = await axios.get('http://localhost:5000/api/horarios');
+        
+        // Verificamos los datos que estamos recibiendo
+        console.log('Datos de la API:', response.data);
+        
+        // Guardamos los datos de los horarios en el estado
         setHorarios(response.data);
       } catch (error) {
         console.error('Error al obtener los horarios:', error);
@@ -23,8 +31,13 @@ const GestionarHorarios = () => {
   // Eliminar un horario
   const handleDelete = async (id) => {
     try {
+      // Eliminamos el horario desde la API
       await axios.delete(`http://localhost:5000/api/horarios/${id}`);
-      setHorarios(horarios.filter(horario => horario._id !== id));
+      
+      // Realizamos un refetch para obtener los horarios actualizados
+      const response = await axios.get('http://localhost:5000/api/horarios');
+      setHorarios(response.data); // Actualizamos el estado con los nuevos horarios
+
       alert('Horario eliminado');
     } catch (error) {
       console.error('Error al eliminar el horario:', error);
@@ -34,6 +47,7 @@ const GestionarHorarios = () => {
 
   return (
     <div id="gestion-horarios-container">
+      <Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" /><Navbar logoSrc="../src/assets/logoLetra.png" altText="Logo" />
       <h2 id="gestion-horarios-title">Gestionar Horarios</h2>
       <div id="crear-horario-btn-container">
         <Link to="/admin/crear-horario">
@@ -51,9 +65,11 @@ const GestionarHorarios = () => {
           </tr>
         </thead>
         <tbody>
+          {/* Mapeamos los horarios para mostrarlos */}
           {horarios.map((horario) => (
             <tr key={horario._id}>
-              <td>{horario.transporte.nombre}</td>
+              <td>{horario.id_transporte ? horario.id_transporte.nombre : 'N/A'}</td> 
+              {/* Verificamos que id_transporte esté presente y mostramos el nombre */}
               <td>{horario.hora_salida}</td>
               <td>{horario.hora_regreso}</td>
               <td>{horario.origen}</td>
@@ -67,6 +83,7 @@ const GestionarHorarios = () => {
           ))}
         </tbody>
       </table>
+       <Footer /> 
     </div>
   );
 };

@@ -15,15 +15,16 @@ export const CrearHorario = () => {
   useEffect(() => {
     const fetchTransportes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/transportes');
+        console.log('Transporte ID:', transporteId);  // Verifica que el ID no sea null o undefined
+        const response = await axios.get(`http://localhost:5000/api/transportes/${transporteId}`);
         setTransportes(response.data);
       } catch (error) {
-        console.error('Error al obtener transportes:', error);
+        console.error('Error al obtener transportes:', error.response || error.message || error);
       }
     };
-
+  
     fetchTransportes();
-  }, []);
+  }, [transporteId]);
 
   // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
@@ -34,18 +35,17 @@ export const CrearHorario = () => {
   // Enviar formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    if (!formData.id_transporte || formData.id_transporte.length !== 24) {
+      alert("Seleccione un transporte válido.");
+      return;
+    }
+  
     try {
-      await axios.post('http://localhost:5000/api/horarios', formData);
-      alert('Horario creado exitosamente');
-      setFormData({
-        id_transporte: '',
-        hora_salida: '',
-        hora_regreso: '',
-        origen: '',
-      });
+      const response = await axios.post('http://localhost:5000/api/horarios', formData);
+      alert(response.data.message);
     } catch (error) {
-      console.error('Error al crear horario:', error);
-      alert('Hubo un problema al crear el horario');
+      console.error('Error al crear horario:', error.response?.data || error.message);
     }
   };
 
